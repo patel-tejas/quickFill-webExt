@@ -1,32 +1,42 @@
-import { useState } from 'react'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import './index.css';
 
-function App() {
-  const [color, setColor] = useState('red')
+const App: React.FC = () => {
+  const [storedData, setStoredData] = useState<{ [key: string]: any }>({});
 
-  const handleColor = async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    chrome.scripting.executeScript<string[], void>({
-      target: { tabId: tab.id! },
-      args: [color],
-      func: (color) => {
-        document.body.style.backgroundColor = color
-
-      }
-    });
-  }
+  useEffect(() => {
+    // Check if chrome object and chrome.storage are available
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      // Fetch stored data from chrome.storage.local
+      chrome.storage.local.get(null, (data) => {
+        setStoredData(data);
+      });
+    } else {
+      console.warn('Chrome storage API is not available.');
+    }
+  }, []);
 
   return (
-    <>
-      <div className='flex flex-col gap-2 items-center justify-center w-full'>
-        <h1 className='text-center'>Background Colour Changer</h1>
-        <div className='flex gap-2'>
-          <input type="color" name="colour_picker" id="colour_picker" value={color} onChange={(e) => setColor(e.target.value)} className='' />
-          <button className='p-3 bg-gray-700 text-white' onClick={handleColor}>Change</button>
-        </div>
+    <div className='w-[400px] p-4 bg-white text-black font-sans'>
+      <h1 className='text-lg font-bold mb-4'>Stored Form Data</h1>
+      <div className='data-list'>
+        {Object.keys(storedData).length > 0 ? (
+          <ul className='space-y-2'>
+            {Object.keys(storedData).map((key) => (
+              <li key={key} className='p-2 bg-gray-100 rounded-md'>
+                <strong className='block text-blue-600'>{key}</strong>
+                <pre className='bg-gray-200 p-2 rounded-md text-sm'>
+                  {JSON.stringify(storedData[key], null, 2)}
+                </pre>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className='text-sm'>No stored data.</p>
+        )}
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default App
+export default App;
