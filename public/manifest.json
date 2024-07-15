@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "My Next.js Chrome Extension",
+    "version": "1.0.0",
+    "description": "A Chrome extension built with Next.js and React",
+    "permissions": [
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "index.html"
+    },
+    "host_permissions": [
+        "https://*/*",
+        "http://*/*"
+    ]
+  }
+  
