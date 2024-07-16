@@ -1,19 +1,18 @@
 // public/content.js
 
-let isRecording = false;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'START_RECORDING') {
-        isRecording = true;
+        let isRecording = true;
     } else if (message.type === 'STOP_RECORDING') {
-        isRecording = false;
+        let isRecording = false;
     }
 });
 
 document.addEventListener('input', (event) => {
     if (!isRecording) return;
 
-    const form = event.target.closest('form');
+    const form = (event.target as Element)?.closest('form');
     if (form) {
         const formData = new FormData(form);
         const formObject = {};
