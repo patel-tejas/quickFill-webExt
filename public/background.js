@@ -1,15 +1,9 @@
-// public/background.js
+// background.js
 
-chrome.runtime.onInstalled.addListener(() => {
-    console.log('Extension installed');
-  });
-  
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.action === 'saveFormData') {
-      chrome.storage.local.set({ [message.url]: message.data }, () => {
-        sendResponse({ status: 'success' });
-      });
-      return true; // Will respond asynchronously
-    }   
-  });
-  
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'START_RECORDING') {
+    chrome.storage.local.set({ isRecording: true });
+  } else if (message.type === 'STOP_RECORDING') {
+    chrome.storage.local.set({ isRecording: false });
+  }
+});

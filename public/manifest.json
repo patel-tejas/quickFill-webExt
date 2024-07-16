@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Form Input Saver",
+    "name": "QuickFill",
     "version": "1.0.0",
     "description": "A Chrome extension that saves input data from forms to local storage",
     "permissions": [
