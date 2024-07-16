@@ -1,5 +1,5 @@
-// public/content.js
-
+// public/content.ts
+let isRecording = false;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'START_RECORDING') {
@@ -10,6 +10,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 document.addEventListener('input', (event) => {
+
     if (!isRecording) return;
 
     const form = (event.target as Element)?.closest('form');
